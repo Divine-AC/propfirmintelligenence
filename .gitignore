@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/review-dist/
 /out/
 
 # production
