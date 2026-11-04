@@ -14,7 +14,9 @@ const initialProfile: TraderProfile = {
   avoidsConsistencyRules: false, tradesNews: false, usesAutomation: false, marketsTraded: "Forex",
   riskPerTradePct: null,
 };
-const currency = (amount: number, code: string) => new Intl.NumberFormat(undefined, { style: "currency", currency: code, maximumFractionDigits: 2 }).format(amount);
+// Pin the locale so Node's server render and the visitor's browser emit the
+// same currency symbols and separators during hydration.
+const currency = (amount: number, code: string) => new Intl.NumberFormat("en-US", { style: "currency", currency: code, maximumFractionDigits: 2 }).format(amount);
 const styles: Array<{ value: TradingStyle; label: string }> = [
   { value: "scalping", label: "Scalping" }, { value: "intraday", label: "Day trading" },
   { value: "swing", label: "Swing trading" }, { value: "news", label: "News trading" },
