@@ -1,0 +1,1002 @@
+[
+  {
+    "date": "2026-09-10",
+    "time": "14:06",
+    "trade": 1,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 604.57,
+    "balance": 13798.62,
+    "account": 1
+  },
+  {
+    "date": "2026-09-10",
+    "time": "14:06",
+    "trade": 2,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": 225.6,
+    "balance": 14024.22,
+    "account": 1
+  },
+  {
+    "date": "2026-09-10",
+    "time": "14:08",
+    "trade": 3,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 1073.07,
+    "balance": 15097.29,
+    "account": 1
+  },
+  {
+    "date": "2026-09-11",
+    "time": "13:42",
+    "trade": 4,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -625.95,
+    "balance": 14471.34,
+    "account": 1
+  },
+  {
+    "date": "2026-09-11",
+    "time": "13:49",
+    "trade": 5,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": 5.49,
+    "balance": 14476.83,
+    "account": 1
+  },
+  {
+    "date": "2026-09-11",
+    "time": "14:11",
+    "trade": 6,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -226.79,
+    "balance": 14250.04,
+    "account": 1
+  },
+  {
+    "date": "2026-09-15",
+    "time": "02:18",
+    "trade": 7,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -248.22,
+    "balance": 14001.82,
+    "account": 1
+  },
+  {
+    "date": "2026-09-15",
+    "time": "23:37",
+    "trade": 8,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 310.18,
+    "balance": 14312.0,
+    "account": 1
+  },
+  {
+    "date": "2026-09-16",
+    "time": "03:31",
+    "trade": 9,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": 346.2,
+    "balance": 14658.2,
+    "account": 1
+  },
+  {
+    "date": "2026-09-16",
+    "time": "19:00",
+    "trade": 10,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -478.6,
+    "balance": 14179.6,
+    "account": 1
+  },
+  {
+    "date": "2026-09-16",
+    "time": "19:01",
+    "trade": 11,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": -271.58,
+    "balance": 13908.01,
+    "account": 1
+  },
+  {
+    "date": "2026-09-16",
+    "time": "19:01",
+    "trade": 12,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": 219.04,
+    "balance": 14127.05,
+    "account": 1
+  },
+  {
+    "date": "2026-09-16",
+    "time": "19:02",
+    "trade": 13,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": -296.18,
+    "balance": 13830.87,
+    "account": 1
+  },
+  {
+    "date": "2026-09-18",
+    "time": "13:16",
+    "trade": 14,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": 103.07,
+    "balance": 13933.95,
+    "account": 1
+  },
+  {
+    "date": "2026-09-18",
+    "time": "13:17",
+    "trade": 15,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": 6.92,
+    "balance": 13940.87,
+    "account": 1
+  },
+  {
+    "date": "2026-09-21",
+    "time": "02:07",
+    "trade": 16,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -735.13,
+    "balance": 13205.74,
+    "account": 1
+  },
+  {
+    "date": "2026-09-21",
+    "time": "13:02",
+    "trade": 17,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -487.08,
+    "balance": 12718.66,
+    "account": 1
+  },
+  {
+    "date": "2026-09-22",
+    "time": "00:41",
+    "trade": 18,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -389.36,
+    "balance": 12329.3,
+    "account": 1
+  },
+  {
+    "date": "2026-09-22",
+    "time": "01:02",
+    "trade": 19,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -98.16,
+    "balance": 12231.14,
+    "account": 1
+  },
+  {
+    "date": "2026-09-22",
+    "time": "19:00",
+    "trade": 20,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -374.07,
+    "balance": 11857.06,
+    "account": 1
+  },
+  {
+    "date": "2026-09-22",
+    "time": "19:28",
+    "trade": 21,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 720.94,
+    "balance": 12578.0,
+    "account": 1
+  },
+  {
+    "date": "2026-09-23",
+    "time": "08:06",
+    "trade": 22,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": -169.63,
+    "balance": 12408.37,
+    "account": 1
+  },
+  {
+    "date": "2026-09-23",
+    "time": "22:37",
+    "trade": 23,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 516.49,
+    "balance": 12924.87,
+    "account": 1
+  },
+  {
+    "date": "2026-09-24",
+    "time": "01:53",
+    "trade": 24,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 186.73,
+    "balance": 13111.6,
+    "account": 1
+  },
+  {
+    "date": "2026-09-25",
+    "time": "03:06",
+    "trade": 25,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 0.0,
+    "balance": 13111.6,
+    "account": 1
+  },
+  {
+    "date": "2026-09-25",
+    "time": "11:17",
+    "trade": 26,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -467.0,
+    "balance": 12644.6,
+    "account": 1
+  },
+  {
+    "date": "2026-09-25",
+    "time": "14:45",
+    "trade": 27,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": 584.07,
+    "balance": 13228.67,
+    "account": 1
+  },
+  {
+    "date": "2026-09-25",
+    "time": "17:14",
+    "trade": 28,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": 173.87,
+    "balance": 13402.54,
+    "account": 1
+  },
+  {
+    "date": "2026-09-28",
+    "time": "08:07",
+    "trade": 29,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": 380.7,
+    "balance": 13783.23,
+    "account": 1
+  },
+  {
+    "date": "2026-09-28",
+    "time": "09:02",
+    "trade": 30,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -355.71,
+    "balance": 13427.52,
+    "account": 1
+  },
+  {
+    "date": "2026-09-28",
+    "time": "11:19",
+    "trade": 31,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -473.89,
+    "balance": 12953.63,
+    "account": 1
+  },
+  {
+    "date": "2026-09-28",
+    "time": "18:47",
+    "trade": 32,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -206.66,
+    "balance": 12746.97,
+    "account": 1
+  },
+  {
+    "date": "2026-09-29",
+    "time": "16:24",
+    "trade": 33,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "long",
+    "pnl": -414.26,
+    "balance": 12332.71,
+    "account": 1
+  },
+  {
+    "date": "2026-09-29",
+    "time": "18:13",
+    "trade": 34,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 344.82,
+    "balance": 12677.53,
+    "account": 1
+  },
+  {
+    "date": "2026-09-30",
+    "time": "08:05",
+    "trade": 35,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": -3.05,
+    "balance": 12674.48,
+    "account": 1
+  },
+  {
+    "date": "2026-09-30",
+    "time": "08:16",
+    "trade": 36,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": -24.7,
+    "balance": 12649.78,
+    "account": 1
+  },
+  {
+    "date": "2026-09-30",
+    "time": "15:25",
+    "trade": 37,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -415.8,
+    "balance": 12233.98,
+    "account": 1
+  },
+  {
+    "date": "2026-09-30",
+    "time": "16:59",
+    "trade": 38,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": 171.04,
+    "balance": 12405.02,
+    "account": 1
+  },
+  {
+    "date": "2026-09-30",
+    "time": "17:09",
+    "trade": 39,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -348.21,
+    "balance": 12056.81,
+    "account": 1
+  },
+  {
+    "date": "2026-10-01",
+    "time": "10:55",
+    "trade": 40,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 672.86,
+    "balance": 12729.67,
+    "account": 1
+  },
+  {
+    "date": "2026-10-01",
+    "time": "15:33",
+    "trade": 41,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -7.64,
+    "balance": 12722.03,
+    "account": 1
+  },
+  {
+    "date": "2026-10-01",
+    "time": "17:19",
+    "trade": 42,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": -9.1,
+    "balance": 12712.92,
+    "account": 1
+  },
+  {
+    "date": "2026-10-01",
+    "time": "18:30",
+    "trade": 43,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -491.34,
+    "balance": 12221.58,
+    "account": 1
+  },
+  {
+    "date": "2026-10-01",
+    "time": "18:30",
+    "trade": 44,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -55.8,
+    "balance": 12165.78,
+    "account": 1
+  },
+  {
+    "date": "2026-10-02",
+    "time": "01:56",
+    "trade": 45,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -290.08,
+    "balance": 11875.7,
+    "account": 1
+  },
+  {
+    "date": "2026-10-02",
+    "time": "04:02",
+    "trade": 46,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": -544.55,
+    "balance": 11331.15,
+    "account": 1
+  },
+  {
+    "date": "2026-10-09",
+    "time": "02:12",
+    "trade": 47,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -398.74,
+    "balance": 10932.41,
+    "account": 1
+  },
+  {
+    "date": "2026-10-12",
+    "time": "12:22",
+    "trade": 48,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -147.6,
+    "balance": 10784.81,
+    "account": 1
+  },
+  {
+    "date": "2026-10-12",
+    "time": "14:06",
+    "trade": 49,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -8.75,
+    "balance": 10776.06,
+    "account": 1
+  },
+  {
+    "date": "2026-10-13",
+    "time": "08:18",
+    "trade": 50,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -4.9,
+    "balance": 10771.16,
+    "account": 1
+  },
+  {
+    "date": "2026-10-13",
+    "time": "09:55",
+    "trade": 51,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -542.41,
+    "balance": 10228.75,
+    "account": 1
+  },
+  {
+    "date": "2026-10-14",
+    "time": "13:33",
+    "trade": 52,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -603.94,
+    "balance": 9624.81,
+    "account": 1
+  },
+  {
+    "date": "2026-10-14",
+    "time": "13:35",
+    "trade": 53,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": 2014.6,
+    "balance": 11639.41,
+    "account": 1
+  },
+  {
+    "date": "2026-10-19",
+    "time": "09:55",
+    "trade": 54,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": 68.0,
+    "balance": 11707.41,
+    "account": 1
+  },
+  {
+    "date": "2026-10-19",
+    "time": "14:46",
+    "trade": 55,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": -309.35,
+    "balance": 11398.07,
+    "account": 1
+  },
+  {
+    "date": "2026-10-19",
+    "time": "19:13",
+    "trade": 56,
+    "symbol": "Bitcoin (BTC/USD)",
+    "direction": "short",
+    "pnl": 441.36,
+    "balance": 11839.42,
+    "account": 1
+  },
+  {
+    "date": "2026-10-19",
+    "time": "19:13",
+    "trade": 57,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 292.0,
+    "balance": 12131.42,
+    "account": 1
+  },
+  {
+    "date": "2026-10-19",
+    "time": "19:13",
+    "trade": 58,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": 623.25,
+    "balance": 12754.67,
+    "account": 1
+  },
+  {
+    "date": "2026-10-20",
+    "time": "13:22",
+    "trade": 59,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -262.43,
+    "balance": 12492.24,
+    "account": 1
+  },
+  {
+    "date": "2026-10-20",
+    "time": "14:41",
+    "trade": 60,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -373.69,
+    "balance": 12118.55,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "00:55",
+    "trade": 61,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -492.7,
+    "balance": 11625.85,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "08:37",
+    "trade": 62,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -140.89,
+    "balance": 11484.96,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "09:16",
+    "trade": 63,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -285.6,
+    "balance": 11199.37,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "11:24",
+    "trade": 64,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -189.49,
+    "balance": 11009.88,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "15:23",
+    "trade": 65,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": -53.18,
+    "balance": 10956.69,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "16:49",
+    "trade": 66,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -214.1,
+    "balance": 10742.59,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "17:32",
+    "trade": 67,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": -198.78,
+    "balance": 10543.81,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "17:32",
+    "trade": 68,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": 156.94,
+    "balance": 10700.75,
+    "account": 1
+  },
+  {
+    "date": "2026-10-21",
+    "time": "19:52",
+    "trade": 69,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 0.0,
+    "balance": 10700.75,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "04:03",
+    "trade": 70,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -308.65,
+    "balance": 10392.1,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "04:15",
+    "trade": 71,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -755.76,
+    "balance": 9636.34,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "10:50",
+    "trade": 72,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -605.65,
+    "balance": 9030.69,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "12:28",
+    "trade": 73,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": -2.77,
+    "balance": 9027.93,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "20:05",
+    "trade": 74,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": 144.8,
+    "balance": 9172.73,
+    "account": 1
+  },
+  {
+    "date": "2026-10-22",
+    "time": "20:05",
+    "trade": 75,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -0.63,
+    "balance": 9172.1,
+    "account": 1
+  },
+  {
+    "date": "2026-10-26",
+    "time": "08:43",
+    "trade": 76,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -180.67,
+    "balance": 8991.43,
+    "account": 1
+  },
+  {
+    "date": "2026-10-27",
+    "time": "13:32",
+    "trade": 77,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -52.23,
+    "balance": 8939.2,
+    "account": 1
+  },
+  {
+    "date": "2026-10-27",
+    "time": "14:02",
+    "trade": 78,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": 2014.19,
+    "balance": 10953.39,
+    "account": 1
+  },
+  {
+    "date": "2026-10-27",
+    "time": "17:35",
+    "trade": 79,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -428.03,
+    "balance": 10525.37,
+    "account": 1
+  },
+  {
+    "date": "2026-10-27",
+    "time": "21:17",
+    "trade": 80,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": 2301.3,
+    "balance": 12826.67,
+    "account": 1
+  },
+  {
+    "date": "2026-10-28",
+    "time": "19:36",
+    "trade": 81,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": -176.99,
+    "balance": 12649.68,
+    "account": 1
+  },
+  {
+    "date": "2026-10-28",
+    "time": "19:36",
+    "trade": 82,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": 9.12,
+    "balance": 12658.8,
+    "account": 1
+  },
+  {
+    "date": "2026-10-28",
+    "time": "19:36",
+    "trade": 83,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -649.72,
+    "balance": 12009.08,
+    "account": 1
+  },
+  {
+    "date": "2026-10-28",
+    "time": "21:01",
+    "trade": 84,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": -26.62,
+    "balance": 11982.46,
+    "account": 1
+  },
+  {
+    "date": "2026-10-29",
+    "time": "15:51",
+    "trade": 85,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -600.76,
+    "balance": 11381.7,
+    "account": 1
+  },
+  {
+    "date": "2026-10-30",
+    "time": "01:01",
+    "trade": 86,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": -105.63,
+    "balance": 11276.07,
+    "account": 1
+  },
+  {
+    "date": "2026-10-30",
+    "time": "15:44",
+    "trade": 87,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": 602.54,
+    "balance": 11878.6,
+    "account": 1
+  },
+  {
+    "date": "2026-10-30",
+    "time": "15:45",
+    "trade": 88,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": 352.7,
+    "balance": 12231.31,
+    "account": 1
+  },
+  {
+    "date": "2026-10-30",
+    "time": "15:45",
+    "trade": 89,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -29.51,
+    "balance": 12201.8,
+    "account": 1
+  },
+  {
+    "date": "2026-11-02",
+    "time": "11:33",
+    "trade": 90,
+    "symbol": "USD/JPY",
+    "direction": "short",
+    "pnl": -606.67,
+    "balance": 11595.12,
+    "account": 1
+  },
+  {
+    "date": "2026-11-03",
+    "time": "10:59",
+    "trade": 91,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -272.13,
+    "balance": 11323.0,
+    "account": 1
+  },
+  {
+    "date": "2026-11-04",
+    "time": "01:33",
+    "trade": 92,
+    "symbol": "EUR/USD",
+    "direction": "short",
+    "pnl": -574.93,
+    "balance": 10748.07,
+    "account": 1
+  },
+  {
+    "date": "2026-11-04",
+    "time": "02:30",
+    "trade": 93,
+    "symbol": "USD/JPY",
+    "direction": "long",
+    "pnl": 4.65,
+    "balance": 10752.72,
+    "account": 1
+  },
+  {
+    "date": "2026-11-05",
+    "time": "15:16",
+    "trade": 94,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -341.93,
+    "balance": 10410.79,
+    "account": 1
+  },
+  {
+    "date": "2026-11-10",
+    "time": "10:00",
+    "trade": 95,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "long",
+    "pnl": 811.44,
+    "balance": 11222.23,
+    "account": 1
+  },
+  {
+    "date": "2026-11-10",
+    "time": "10:01",
+    "trade": 96,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "long",
+    "pnl": 1856.82,
+    "balance": 13079.05,
+    "account": 1
+  },
+  {
+    "date": "2026-11-11",
+    "time": "10:37",
+    "trade": 97,
+    "symbol": "EUR/USD",
+    "direction": "long",
+    "pnl": -1228.51,
+    "balance": 11850.54,
+    "account": 1
+  },
+  {
+    "date": "2026-11-11",
+    "time": "11:33",
+    "trade": 98,
+    "symbol": "Crude Oil (WTI)",
+    "direction": "short",
+    "pnl": 2029.44,
+    "balance": 13879.98,
+    "account": 1
+  },
+  {
+    "date": "2026-11-11",
+    "time": "12:29",
+    "trade": 99,
+    "symbol": "Gold (XAU/USD)",
+    "direction": "short",
+    "pnl": -199.5,
+    "balance": 13680.48,
+    "account": 1
+  },
+  {
+    "date": "2026-11-13",
+    "time": "20:30",
+    "trade": 100,
+    "symbol": "Silver (XAG/USD)",
+    "direction": "short",
+    "pnl": 2297.18,
+    "balance": 102297.18,
+    "account": 2
+  }
+]
