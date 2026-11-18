@@ -34,8 +34,8 @@ const normalizeHeader = (header: string) => header.trim().toLowerCase().replace(
 const aliases: Record<TradeField, string[]> = {
   symbol: ["symbol", "instrument", "market", "asset"],
   side: ["side", "type", "direction", "action"],
-  openTime: ["open time", "opened at", "open date", "time open", "entry time", "entry date"],
-  closeTime: ["close time", "closed at", "close date", "time close", "exit time", "exit date"],
+  openTime: ["opentime", "open time", "opened at", "open date", "time open", "entry time", "entry date"],
+  closeTime: ["closetime", "close time", "closed at", "close date", "time close", "exit time", "exit date"],
   profit: ["profit", "gross profit", "net profit", "net pnl", "p&l", "pnl", "profit/loss"],
   commission: ["commission", "commissions", "fee", "fees"],
   swap: ["swap", "swaps", "financing"],

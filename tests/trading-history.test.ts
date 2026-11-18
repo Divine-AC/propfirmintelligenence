@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { analyzeTradeCsv, previewTradeCsv, TradeCsvError } from "../src/lib/trading-history/csv";
+import { SAMPLE_TRADES_CSV } from "../src/data/sample-trades";
 import { buildHistorySummary } from "../src/lib/trading-history/analytics";
 
 const csv = [
@@ -10,6 +11,14 @@ const csv = [
 ].join("\n");
 
 describe("trade history CSV analysis", () => {
+  it("can preview and analyze the bundled demo without remapping columns", () => {
+    const preview = previewTradeCsv(SAMPLE_TRADES_CSV);
+    expect(preview.validRows).toBe(12);
+    expect(preview.invalidRows).toHaveLength(0);
+    expect(preview.unmappedHeaders).toEqual([]);
+    expect(analyzeTradeCsv(SAMPLE_TRADES_CSV, 25_000).metrics.tradeCount).toBe(12);
+  });
+
   it("calculates reproducible closed-trade metrics and net costs", () => {
     const { trades, metrics } = analyzeTradeCsv(csv, 1_000);
     expect(trades).toHaveLength(3);
