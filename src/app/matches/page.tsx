@@ -312,22 +312,20 @@ export default function MatchesPage() {
         <header className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-slate-800/80 pb-6">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
-              Research-backed account search &amp; specialist consultation
+              Step 1 · Your trading profile
             </p>
             <h1 className="max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">
-              Find programmes that fit how you trade.
+              Find your prop firm match.
             </h1>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400 sm:text-base">
-              Explain your strategy in your own words, link your closed-trade history, and receive an evidence-based
-              recommendation with a 4-part (A/B/C/D) operational breakdown of every material rule. Unknown rules stay
-              visible and prevent reckless purchase advice.
+              Fill in your trading preferences below, then select Search prop firms. We’ll show you matching accounts, important rules and any details that still need verification. Adding trade history is optional.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="rounded-xl border border-slate-800 bg-slate-900/80 px-4 py-2.5 text-right">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                Consultation Readiness
+                Profile completeness
               </p>
               <p className="mt-0.5 text-lg font-bold text-cyan-300 tabular-nums">
                 {consultation.completenessPct}% Complete
@@ -339,7 +337,7 @@ export default function MatchesPage() {
                 onClick={loadDemoHistoryInline}
                 className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/20"
               >
-                + Load 12-Trade Sample History
+                Try with 12 sample trades
               </button>
             ) : (
               <Link
@@ -382,7 +380,7 @@ export default function MatchesPage() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-cyan-300">
                   1 · Trader &amp; Strategy Consultation
                 </p>
-                <h2 className="mt-1 text-2xl font-bold text-white">What should a good fit look like?</h2>
+                <h2 className="mt-1 text-2xl font-bold text-white">Tell us how you trade</h2>
               </div>
             </div>
 
@@ -741,10 +739,9 @@ export default function MatchesPage() {
                 <p className="text-xs font-semibold uppercase tracking-wider text-cyan-300">
                   27 researched account options · 4 firms · Rule-level verification
                 </p>
-                <h2 className="mt-3 text-2xl font-bold text-white">Your matches will appear here</h2>
+                <h2 className="mt-3 text-2xl font-bold text-white">Your results will appear here</h2>
                 <p className="mt-3 leading-7 text-slate-300">
-                  Complete your strategy profile on the left and press <strong>Search prop firms</strong> to generate
-                  your personalised advisory dossier, including:
+                  Complete the profile, then press <strong>Search prop firms</strong> at the bottom of the form. You’ll see your results here, including:
                 </p>
                 <ul className="mt-4 grid gap-2.5 text-sm text-slate-300 sm:grid-cols-2">
                   <li className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">

@@ -42,11 +42,11 @@ const getUserName = () => {
 };
 
 const navLinks = [
-  { href: "/", label: "Overview" },
-  { href: "/matches", label: "Advisory Consultation" },
-  { href: "/history", label: "Trade History Lab" },
-  { href: "/compare", label: "Rule Matrix" },
-  { href: "/reports", label: "Saved Dossiers" },
+  { href: "/", label: "Home" },
+  { href: "/matches", label: "Find matches" },
+  { href: "/history", label: "Trade history" },
+  { href: "/compare", label: "Compare" },
+  { href: "/reports", label: "Saved reports" },
 ];
 
 export function Navbar() {
@@ -136,7 +136,7 @@ export function Navbar() {
               className={`h-2 w-2 rounded-full ${userName ? "bg-cyan-400" : "bg-slate-500"}`}
               aria-hidden="true"
             />
-            <span>{userName ? userName : "Trader Workspace"}</span>
+            <span>{userName ? userName : "My workspace"}</span>
           </Link>
 
           <button
