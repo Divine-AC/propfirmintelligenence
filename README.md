@@ -2,6 +2,16 @@
 
 Research-driven Forex & CFD prop-firm advisory platform that conducts a strategy consultation, analyses closed-trade history, interprets official programme rules, evaluates operational risks, compares alternatives, and produces an evidence-backed recommendation.
 
+![Production-build screenshot of the redesigned workspace, with the firm research globe, catalogue statistics, and three research tools.](docs/workspace-preview.webp)
+
+## Using the workspace
+
+- **Overview:** start a match, open trade diagnostics, or browse the firms and official sources in the research catalogue.
+- **Find matches:** complete Strategy, Account fit, and Risk review. Use **Edit profile** to adjust your inputs, or name and save the resulting report.
+- **Trade history:** import a CSV, try the 12-trade sample, or choose manual entry. Check the detected columns before analyzing. Only summary statistics are retained for matching.
+- **Compare:** use **Edit selection** to filter by firm or size. Remove a selected account before adding a fifth; the current comparison is never silently replaced.
+- **Saved reports:** read, print, or delete a consultation in this browser. A local profile is optional.
+
 ## Core Advisory Capabilities
 
 1. **Strategy Consultation & Contradiction Detection (`/matches`)**
@@ -31,4 +41,10 @@ Research-driven Forex & CFD prop-firm advisory platform that conducts a strategy
 
 ## Development
 
-Run `npm run dev` for local development. Run `npm test` for matching, consultation, report, and trade-history tests, and `npx tsc --noEmit` for TypeScript checks.
+Run `npm ci` and `npm run dev` for local development. Run `npm test` for matching, consultation, report, and trade-history tests, `npm run lint` for linting, and `npx tsc --noEmit` for TypeScript checks. `npm run build` followed by `npm start` serves the production build. Both development and production compile Tailwind through PostCSS; fonts and illustrations are served locally.
+
+For desktop and phone browser regression tests, run `npx playwright install chromium` once, then `npm run test:ui`. This builds the production app and starts an isolated `next start` server on port 3100. The tests check that the compiled styles render, the globe loads, and the import, comparison, and report workflows respond to input. They do not reuse a development server. Set `CHROMIUM_PATH` to use an existing Chromium installation instead.
+
+## Preview vs. production
+
+This project's Vercel production branch is `master`. A pull request has its own preview URL; it does not update [the public site](https://propfirmintelligenence.vercel.app) until the change is merged and the production deployment is ready. The redesigned overview has a light navigation bar and the heading **“Your strategy. The right prop firm.”**
