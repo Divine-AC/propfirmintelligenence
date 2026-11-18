@@ -3,6 +3,8 @@ import { checkEligibility } from "../src/lib/matching/eligibility";
 import { MATCH_WEIGHTS, scoreAccount } from "../src/lib/matching/scoring";
 import { firmAccounts } from "../src/data/firms";
 import { assessAccount, decidePrimaryRecommendation, estimateSequentialLossExposure } from "../src/lib/matching/advisory";
+import { generateAdvisoryReport } from "../src/lib/matching/report";
+import { evaluateConsultationReadiness, extractStrategyIntelligence } from "../src/lib/strategy/consultation";
 import type { FirmAccount, TraderProfile } from "../src/lib/matching/types";
 
 const trader: TraderProfile = {
@@ -107,5 +109,59 @@ describe("PropFirm Intelligence matching engine", () => {
   });
   it("does not score a known-incompatible account", () => {
     expect(scoreAccount(trader, { ...account, price: { value: 150, status: "verified" } }).score).toBeNull();
+  });
+  it("extracts strategy parameters and flags contradictions in consultation notes", () => {
+    const narrative = "I trade EUR/USD and XAU/USD on M15 and H4 during the London session. I risk 0.75% per trade for a 1:2.5 target and hold positions over the weekend.";
+    const extracted = extractStrategyIntelligence(narrative);
+    expect(extracted.instruments).toContain("EUR/USD");
+    expect(extracted.instruments).toContain("XAU/USD (Gold)");
+    expect(extracted.timeframes).toEqual(["M15", "H4"]);
+    expect(extracted.riskPerTradePct).toBe(0.75);
+    expect(extracted.rewardRisk).toBe(2.5);
+    expect(extracted.inferredWeekendHolding).toBe(true);
+
+    const consultation = evaluateConsultationReadiness(
+      { ...trader, strategyDescription: narrative, requiresWeekendHolding: false },
+      null
+    );
+    expect(consultation.followUps.some((f) => f.id === "contradiction-weekend")).toBe(true);
+  });
+  it("generates a full advisory report with 4-part rule breakdowns, alternatives, and financial trade-offs", () => {
+    const eurTrader: TraderProfile = {
+      ...trader,
+      budgetCurrency: "EUR",
+      maxBudget: 300,
+      minimumAccountSize: 10000,
+      riskPerTradePct: 0.5,
+      strategyDescription: "Intraday EUR/USD structure entries during London session, flat before daily rollover.",
+    };
+    const report = generateAdvisoryReport(eurTrader, firmAccounts, {
+      tradeCount: 24,
+      averageHoldingMinutes: 95,
+      averageTradesPerActiveWeek: 6,
+      maxLosingStreak: 3,
+      largestRealizedDailyLossPct: 1.4,
+      maximumBalanceDrawdownPct: 3.2,
+      profitFactor: 1.85,
+      expectancy: 42,
+      bestDayProfitShare: 0.28,
+      netProfit: 1008,
+      winRate: 0.58,
+      overnightTradesCount: 0,
+      weekendTradesCount: 0,
+      shortHoldTradesCount: 0,
+    });
+    expect(report.executiveRecommendation.verdict).toBe("recommended");
+    expect(report.executiveRecommendation.primaryAccount?.id).toContain("ftmo-2-step");
+    expect(report.ruleBreakdowns.length).toBeGreaterThanOrEqual(8);
+    for (const breakdown of report.ruleBreakdowns) {
+      expect(breakdown.whatTheRuleSays.length).toBeGreaterThan(10);
+      expect(breakdown.whatItMeansInPractice.length).toBeGreaterThan(10);
+      expect(breakdown.whatItMeansForYou.length).toBeGreaterThan(10);
+      expect(breakdown.howToManageIt.length).toBeGreaterThan(10);
+    }
+    expect(report.alternativesAnalysis.length).toBeGreaterThan(0);
+    expect(report.financialTradeOffAnalysis.comparisonRows.length).toBeGreaterThan(0);
+    expect(report.evidenceAuditLog.entries.length).toBeGreaterThan(5);
   });
 });

@@ -39,6 +39,30 @@ export type CsvPreview = {
   warnings: string[];
 };
 
+export type SessionPerformance = {
+  session: string;
+  trades: number;
+  wins: number;
+  winRate: number;
+  netProfit: number;
+};
+
+export type PerformanceHalfSummary = {
+  trades: number;
+  winRate: number;
+  netProfit: number;
+  profitFactor: number | null;
+};
+
+export type BehavioralFinding = {
+  id: string;
+  category: "edge" | "concentration" | "risk" | "holding" | "session" | "stability";
+  severity: "positive" | "neutral" | "caution" | "warning";
+  title: string;
+  detail: string;
+  evidenceBasis: "confirmed" | "estimated";
+};
+
 export type TradeMetrics = {
   tradeCount: number;
   wins: number;
@@ -48,24 +72,41 @@ export type TradeMetrics = {
   winRate: number | null;
   averageWin: number | null;
   averageLoss: number | null;
+  largestWin: number | null;
+  largestLoss: number | null;
+  outlierLossRatio: number | null;
   profitFactor: number | null;
   expectancy: number;
   averageRewardRisk: number | null;
   averageRealizedR: number | null;
   tradesWithRiskAmount: number;
+  riskConsistencyCv: number | null;
   averageTradesPerActiveWeek: number | null;
   averageTradesPerActiveDay: number | null;
   averageHoldingMinutes: number;
+  medianHoldingMinutes: number;
+  minHoldingMinutes: number;
+  maxHoldingMinutes: number;
+  shortHoldTradesCount: number;
+  overnightTradesCount: number;
+  weekendTradesCount: number;
   maximumBalanceDrawdown: number;
   maximumSampledEquityDrawdown: number | null;
   largestRealizedDailyLoss: number;
   maxWinningStreak: number;
   maxLosingStreak: number;
   bestDayProfitShare: number | null;
-  instruments: Array<{ symbol: string; trades: number; netProfit: number }>;
+  topThreeTradesProfitShare: number | null;
+  instruments: Array<{ symbol: string; trades: number; netProfit: number; winRate?: number }>;
   daysOfWeek: Array<{ day: string; trades: number; netProfit: number }>;
+  sessions: SessionPerformance[];
   directionPerformance: Array<{ side: "long" | "short"; trades: number; netProfit: number; winRate: number }>;
   dailyResults: Array<{ date: string; netProfit: number; cumulativeProfit: number }>;
+  performanceHalfComparison: {
+    firstHalf: PerformanceHalfSummary;
+    secondHalf: PerformanceHalfSummary;
+  } | null;
+  behavioralFindings: BehavioralFinding[];
   limitations: string[];
 };
 
@@ -82,4 +123,25 @@ export type TradeHistorySummary = {
   profitFactor: number | null;
   expectancy: number;
   bestDayProfitShare: number | null;
+  // Extended diagnostic aggregates for deep advisory consultation
+  startingBalance?: number;
+  netProfit?: number;
+  winRate?: number | null;
+  averageWin?: number | null;
+  averageLoss?: number | null;
+  largestLoss?: number | null;
+  outlierLossRatio?: number | null;
+  averageRewardRisk?: number | null;
+  averageRealizedR?: number | null;
+  maxWinningStreak?: number;
+  topThreeTradesProfitShare?: number | null;
+  shortHoldTradesCount?: number;
+  overnightTradesCount?: number;
+  weekendTradesCount?: number;
+  maximumSampledEquityDrawdownPct?: number | null;
+  riskConsistencyCv?: number | null;
+  topInstruments?: Array<{ symbol: string; trades: number; netProfit: number }>;
+  sessions?: SessionPerformance[];
+  behavioralFindings?: BehavioralFinding[];
+  limitations?: string[];
 };

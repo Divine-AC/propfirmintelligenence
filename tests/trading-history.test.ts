@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { analyzeTradeCsv, previewTradeCsv, TradeCsvError } from "../src/lib/trading-history/csv";
+import { buildHistorySummary } from "../src/lib/trading-history/analytics";
 
 const csv = [
   "symbol,type,open_time,close_time,profit,commission,swap,risk_amount",
@@ -81,5 +82,27 @@ describe("trade history CSV analysis", () => {
     expect(metrics.maximumBalanceDrawdown).toBe(20);
     expect(metrics.maximumSampledEquityDrawdown).toBe(30);
     expect(metrics.limitations[0]).toMatch(/balance values/);
+  });
+
+  it("extracts session breakdowns, overnight/weekend crossings, sub-30s scalps, and behavioral findings", () => {
+    const sample = [
+      "symbol,side,open_time,close_time,profit,risk_amount",
+      "EURUSD,buy,2026-10-02T08:00:00Z,2026-10-02T08:00:20Z,120,50",
+      "GBPUSD,sell,2026-10-02T14:00:00Z,2026-10-05T09:00:00Z,400,50",
+      "XAUUSD,buy,2026-10-06T17:00:00Z,2026-10-06T18:30:00Z,-80,50",
+      "USDJPY,sell,2026-10-07T02:00:00Z,2026-10-07T04:00:00Z,60,50",
+    ].join("\n");
+    const analysis = analyzeTradeCsv(sample, 10_000);
+    expect(analysis.metrics.shortHoldTradesCount).toBe(1);
+    expect(analysis.metrics.overnightTradesCount).toBe(1);
+    expect(analysis.metrics.weekendTradesCount).toBe(1);
+    expect(analysis.metrics.sessions.length).toBe(4);
+    expect(analysis.metrics.performanceHalfComparison).not.toBeNull();
+    expect(analysis.metrics.behavioralFindings.length).toBeGreaterThan(0);
+
+    const summary = buildHistorySummary(analysis, 10_000);
+    expect(summary.weekendTradesCount).toBe(1);
+    expect(summary.shortHoldTradesCount).toBe(1);
+    expect(summary.sessions?.length).toBe(4);
   });
 });

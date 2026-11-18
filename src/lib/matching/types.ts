@@ -27,6 +27,22 @@ export type TraderProfile = {
   usesAutomation: boolean;
   marketsTraded: string;
   riskPerTradePct: number | null;
+  // Extended consultation fields (optional for backward compatibility)
+  analysisTimeframe?: string;
+  executionTimeframe?: string;
+  primarySessions?: string;
+  entryAndConfirmLogic?: string;
+  stopLossLogic?: string;
+  takeProfitLogic?: string;
+  typicalRewardRisk?: number | null;
+  typicalHoldingDuration?: string;
+  holdsOvernight?: boolean;
+  expectedMaxLosingStreak?: number | null;
+  executionMethod?: "manual" | "ea_bot" | "semi_automated" | "copy_trading";
+  usesHedgingOrGrid?: boolean;
+  preferredEvaluationPhases?: "1-step" | "2-step" | "either";
+  primaryObjective?: "lowest_cost" | "fastest_funding" | "safest_drawdown" | "highest_payout_split";
+  experienceYears?: number | null;
 };
 
 export type FirmAccount = {
