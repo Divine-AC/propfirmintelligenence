@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { analyzeTradePreview, MAX_CSV_BYTES, previewTradeCsv, TradeCsvError } from "../../lib/trading-history/csv";
 import type { CsvPreview, TradeAnalysis, TradeColumnMap, TradeField } from "../../lib/trading-history/types";
@@ -12,7 +13,7 @@ const fields: Array<{ id: TradeField; label: string; required?: boolean }> = [
   { id: "tradeId", label: "Trade ID" }, { id: "balance", label: "Balance after trade" }, { id: "equity", label: "Equity after trade" },
 ];
 const fieldClass = "mt-2 w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-white outline-none focus:border-cyan-400";
-const numberText = (value: number | null) => value === null ? "Insufficient data" : value.toLocaleString("en-US", { maximumFractionDigits: 2 });
+const numberText = (value: number | null) => value === null ? "Insufficient data" : value.toLocaleString(undefined, { maximumFractionDigits: 2 });
 const percentText = (value: number | null) => value === null ? "Insufficient data" : `${(value * 100).toFixed(1)}%`;
 
 function Metric({ label, value, note }: { label: string; value: string; note?: string }) {
@@ -57,18 +58,6 @@ function CumulativeProfitChart({ points }: { points: TradeAnalysis["metrics"]["d
   </section>;
 }
 
-const SAMPLE_CSV = `symbol,side,openTime,closeTime,profit,commission,swap
-EURUSD,buy,2026-10-01T08:15:00Z,2026-10-01T10:40:00Z,320,-7,-1.5
-GBPUSD,sell,2026-10-01T13:20:00Z,2026-10-01T15:05:00Z,-180,-7,0
-XAUUSD,buy,2026-10-02T09:00:00Z,2026-10-02T12:30:00Z,540,-10,-2
-EURUSD,sell,2026-10-03T07:45:00Z,2026-10-03T09:10:00Z,210,-7,0
-USDJPY,buy,2026-10-06T14:10:00Z,2026-10-06T16:50:00Z,-240,-7,-1
-GBPUSD,buy,2026-10-07T08:30:00Z,2026-10-07T11:15:00Z,410,-7,0
-XAUUSD,sell,2026-10-08T12:00:00Z,2026-10-08T14:45:00Z,290,-10,0
-EURUSD,buy,2026-10-09T09:20:00Z,2026-10-09T10:55:00Z,-150,-7,0`;
-
-const BALANCE_PRESETS = [10000, 25000, 50000, 100000, 200000];
-
 export default function HistoryPage() {
   const [rawCsv, setRawCsv] = useState("");
   const [preview, setPreview] = useState<CsvPreview | null>(null);
@@ -76,8 +65,7 @@ export default function HistoryPage() {
   const [analysis, setAnalysis] = useState<TradeAnalysis | null>(null);
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
-  const [startingBalance, setStartingBalance] = useState("10000");
-  const [isDragging, setIsDragging] = useState(false);
+  const [startingBalance, setStartingBalance] = useState("0");
 
   function previewWith(csv: string, nextMapping?: TradeColumnMap) {
     try {
@@ -132,55 +120,17 @@ export default function HistoryPage() {
     }
   }
 
-  function loadSampleCsv() {
-    setError("");
-    setRawCsv(SAMPLE_CSV);
-    setFileName("sample-trades.csv");
-    previewWith(SAMPLE_CSV);
-  }
-
   function clear() {
     setRawCsv(""); setPreview(null); setAnalysis(null); setMapping({}); setFileName(""); setError("");
     try { localStorage.removeItem("propfirm-history-summary"); window.dispatchEvent(new Event("propfirm-history-summary-change")); } catch { /* Local report can still be cleared in memory. */ }
   }
 
   return <main className="min-h-screen bg-slate-950 px-5 py-10 text-white sm:px-8"><div className="mx-auto max-w-6xl">
-    <header className="mb-8"><p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">Trading history</p><h1 className="text-3xl font-bold tracking-tight sm:text-5xl">See what your closed trades show.</h1><p className="mt-4 max-w-3xl leading-7 text-slate-400">Preview and map a CSV before analysis. The file is read in this browser tab and is not uploaded or saved by this page.</p></header>
+    <header className="mb-8"><Link href="/" className="text-sm text-cyan-300 hover:underline">PropFirm Intelligence</Link><p className="mb-3 mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">Trading history</p><h1 className="text-3xl font-bold tracking-tight sm:text-5xl">See what your closed trades show.</h1><p className="mt-4 max-w-3xl leading-7 text-slate-400">Preview and map a CSV before analysis. The file is read in this browser tab and is not uploaded or saved by this page.</p></header>
 
     <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-      <div
-        onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setIsDragging(false);
-          const file = event.dataTransfer.files?.[0];
-          if (file) void importFile(file);
-        }}
-        className={`rounded-2xl border p-6 transition ${isDragging ? "border-cyan-400 bg-cyan-400/10" : "border-slate-800 bg-slate-900/60"}`}
-      >
-        <h2 className="text-xl font-semibold">Import your trade history</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-400">Drag and drop a CSV here, choose a file, or load a sample export. Confirm column mappings below before analyzing.</p>
-        <div className="mt-5">
-          <label className="block text-sm text-slate-300">Starting balance<input aria-label="Starting balance" inputMode="decimal" className={`${fieldClass} block w-52`} value={startingBalance} onChange={(event) => setStartingBalance(event.target.value)} /></label>
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            {BALANCE_PRESETS.map((preset) => (
-              <button
-                key={preset}
-                type="button"
-                onClick={() => setStartingBalance(String(preset))}
-                className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition ${startingBalance === String(preset) ? "border-cyan-400 bg-cyan-400/15 text-cyan-200" : "border-slate-700 text-slate-300 hover:border-slate-500"}`}
-              >
-                ${(preset / 1000).toFixed(0)}k
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <label className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-cyan-400 px-5 py-2.5 font-semibold text-slate-950 hover:bg-cyan-300">Choose CSV<input type="file" accept=".csv,text/csv" className="sr-only" onChange={(event) => void importFile(event.target.files?.[0])} /></label>
-          <button type="button" onClick={loadSampleCsv} className="min-h-11 rounded-xl border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-cyan-400 hover:text-cyan-200">Load sample CSV</button>
-          {preview && <button type="button" className="min-h-11 rounded-xl border border-slate-700 px-4 py-2.5 text-sm text-slate-200 hover:bg-slate-800" onClick={clear}>Clear analysis</button>}
-        </div>
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"><h2 className="text-xl font-semibold">Import your trade history</h2><p className="mt-2 text-sm leading-6 text-slate-400">The importer suggests matching columns. Confirm them below and review invalid or duplicate rows before analyzing.</p>
+        <div className="mt-6 flex flex-wrap items-end gap-4"><label className="block text-sm text-slate-300">Starting balance<input aria-label="Starting balance" inputMode="decimal" className={`${fieldClass} block w-52`} value={startingBalance} onChange={(event) => setStartingBalance(event.target.value)} /></label><label className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 hover:bg-cyan-300">Choose CSV<input type="file" accept=".csv,text/csv" className="sr-only" onChange={(event) => void importFile(event.target.files?.[0])} /></label>{preview && <button className="rounded-xl border border-slate-700 px-5 py-3 text-slate-200 hover:bg-slate-800" onClick={clear}>Clear analysis</button>}</div>
         <p className="mt-4 text-xs text-slate-500">CSV only · up to 5 MB and 10,000 trades · timestamps must include a timezone</p>{error && <p role="alert" className="mt-5 rounded-xl border border-rose-400/30 bg-rose-400/10 p-4 text-sm text-rose-200">{error}</p>}
         {preview && <p role="status" className="mt-5 text-sm text-emerald-300">Previewing {fileName}: {preview.validRows} valid, {preview.invalidRows.length} invalid, {preview.duplicateRows.length} duplicate of {preview.totalRows} rows.</p>}
       </div>

@@ -21,12 +21,6 @@ const styles: Array<{ value: TradingStyle; label: string }> = [
   { value: "scalping", label: "Scalping" }, { value: "intraday", label: "Day trading" },
   { value: "swing", label: "Swing trading" }, { value: "news", label: "News trading" },
 ];
-const profilePresets: Array<{ label: string; patch: Partial<TraderProfile> }> = [
-  { label: "Day trader", patch: { tradingStyle: "intraday", tradesPerWeek: 8, requiresWeekendHolding: false, tradesNews: false, maxBudget: 150, minimumAccountSize: 10_000 } },
-  { label: "Scalper", patch: { tradingStyle: "scalping", tradesPerWeek: 25, requiresWeekendHolding: false, tradesNews: false, maxBudget: 150, minimumAccountSize: 10_000 } },
-  { label: "Swing trader", patch: { tradingStyle: "swing", tradesPerWeek: 3, requiresWeekendHolding: true, tradesNews: false, maxBudget: 250, minimumAccountSize: 25_000 } },
-  { label: "News trader", patch: { tradingStyle: "news", tradesPerWeek: 4, requiresWeekendHolding: false, tradesNews: true, maxBudget: 150, minimumAccountSize: 10_000 } },
-];
 const subscribeHistory = (callback: () => void) => {
   window.addEventListener("storage", callback);
   window.addEventListener("propfirm-history-summary-change", callback);
@@ -75,7 +69,8 @@ export default function MatchesPage() {
   return <main className="min-h-screen bg-slate-950 px-5 py-9 text-white sm:px-8">
     <div className="mx-auto max-w-6xl">
       <header className="mb-8">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">Research-backed account search</p>
+        <Link href="/" className="text-sm text-cyan-300 hover:underline">PropFirm Intelligence</Link>
+        <p className="mb-3 mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">Research-backed account search</p>
         <h1 className="max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">Find programmes that fit how you trade.</h1>
         <p className="mt-4 max-w-3xl leading-7 text-slate-400">Set your strategy and account preferences, then compare researched account sizes against documented rules. Unknown rules stay visible and can prevent a purchase recommendation.</p>
       </header>
@@ -89,19 +84,6 @@ export default function MatchesPage() {
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <form onSubmit={startSearch} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-7">
           <div><p className="text-sm font-semibold text-cyan-300">Your profile</p><h2 className="mt-1 text-2xl font-semibold">What should a good fit look like?</h2></div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="text-xs text-slate-400">Quick presets:</span>
-            {profilePresets.map((preset) => (
-              <button
-                key={preset.label}
-                type="button"
-                onClick={() => setProfile((current) => ({ ...current, ...preset.patch }))}
-                className="rounded-lg border border-slate-700 px-2.5 py-1 text-xs font-medium text-slate-300 transition hover:border-cyan-400 hover:text-cyan-200"
-              >
-                {preset.label}
-              </button>
-            ))}
-          </div>
           <label className="mt-6 block text-sm text-slate-300">Trading style<select className={inputClass} value={profile.tradingStyle} onChange={(e) => update("tradingStyle", e.target.value as TradingStyle)}>{styles.map((style) => <option key={style.value} value={style.value}>{style.label}</option>)}</select></label>
           <label className="mt-4 block text-sm text-slate-300">Describe your strategy (optional)<textarea className={inputClass} rows={3} value={profile.strategyDescription} onChange={(e) => update("strategyDescription", e.target.value)} placeholder="For example: EUR/USD intraday, usually flat before rollover." /></label>
           <label className="mt-4 block text-sm text-slate-300">Markets you trade<input className={inputClass} value={profile.marketsTraded} onChange={(e) => update("marketsTraded", e.target.value)} placeholder="Forex, indices, metals…" /></label>
