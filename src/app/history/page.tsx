@@ -14,7 +14,8 @@ import {
 import { storeTradeSummary, useTradeSummary } from "@/lib/storage/use-trade-summary";
 import { SAMPLE_TRADES_CSV } from "@/data/sample-trades";
 import { PageHeading } from "@/components/PageHeading";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { PerformanceOverview } from "@/components/history/PerformanceOverview";
 import { analyzeTrades, buildHistorySummary } from "@/lib/trading-history/analytics";
 import {
   analyzeTradePreview,
@@ -121,7 +122,7 @@ function CumulativeProfitChart({ points }: { points: TradeAnalysis["metrics"]["d
                 : "border-rose-200 bg-rose-50 text-rose-800"
             }`}
           >
-            Sample total: {last.cumulativeProfit >= 0 ? "+" : ""}
+            Period total: {last.cumulativeProfit >= 0 ? "+" : ""}
             {numberText(last.cumulativeProfit)}
           </p>
         )}
@@ -196,6 +197,20 @@ function CumulativeProfitChart({ points }: { points: TradeAnalysis["metrics"]["d
   );
 }
 
+function useRevealSection() {
+  const [request, setRequest] = useState<{ id: string } | null>(null);
+  const handled = useRef(request);
+  // File reads resolve asynchronously. Wait for React to commit the new section before focusing it.
+  useEffect(() => {
+    if (!request || request === handled.current) return;
+    handled.current = request;
+    const section = document.getElementById(request.id);
+    section?.focus({ preventScroll: true });
+    section?.scrollIntoView({ block: "start" });
+  }, [request]);
+  return (id: string) => setRequest({ id });
+}
+
 const BALANCE_PRESETS = [10000, 25000, 50000, 100000, 200000];
 
 type ManualTradeRow = {
@@ -249,6 +264,7 @@ const INITIAL_MANUAL_ROWS: ManualTradeRow[] = [
 
 export default function HistoryPage() {
   const linkedSummary = useTradeSummary();
+  const revealSection = useRevealSection();
   const [summarySaved, setSummarySaved] = useState(false);
   const [inputMode, setInputMode] = useState<"csv" | "manual">("csv");
   const [rawCsv, setRawCsv] = useState("");
@@ -261,23 +277,56 @@ export default function HistoryPage() {
   const [startingBalance, setStartingBalance] = useState("10000");
   const [isDragging, setIsDragging] = useState(false);
 
+  const importVersion = useRef(0);
+  const numericBalance = Number(startingBalance);
+  const validBalance = Number.isFinite(numericBalance) && numericBalance >= 0;
+  // Preview and confirmed report share one analysis; previewing never writes to storage.
+  const csvAnalysis = useMemo(
+    () =>
+      inputMode === "csv" && preview?.validRows && validBalance
+        ? analyzeTradePreview(preview, numericBalance)
+        : null,
+    [inputMode, preview, numericBalance, validBalance],
+  );
+  const currentAnalysis = inputMode === "csv" ? csvAnalysis : analysis;
+  const currentSummary = useMemo(
+    () => (currentAnalysis ? buildHistorySummary(currentAnalysis, numericBalance) : null),
+    [currentAnalysis, numericBalance],
+  );
+  const savedOnly = inputMode === "csv" && !preview && !fileName && !error ? linkedSummary : null;
+  const overview = currentSummary ?? savedOnly;
+
+  function changeBalance(value: string) {
+    setStartingBalance(value);
+    setAnalysis(null);
+    setError("");
+  }
+
   function changeMode(mode: "csv" | "manual") {
     if (mode !== inputMode) {
+      importVersion.current += 1;
       setInputMode(mode);
       setAnalysis(null);
       setError("");
     }
   }
 
-  function saveSummaryToBrowser(report: TradeAnalysis, balance: number) {
-    setSummarySaved(storeTradeSummary(buildHistorySummary(report, balance)));
+  function confirmAnalysis(report: TradeAnalysis) {
+    setAnalysis(report);
+    setSummarySaved(storeTradeSummary(buildHistorySummary(report, numericBalance)));
+    setError("");
+    revealSection(inputMode === "csv" ? "analysis-results" : "performance-summary");
   }
 
   function previewWith(csv: string, nextMapping?: TradeColumnMap) {
     try {
       const next = previewTradeCsv(csv, nextMapping);
       setPreview(next);
-      if (!nextMapping) requestAnimationFrame(() => document.getElementById("column-review")?.focus());
+      if (!nextMapping) {
+        revealSection(
+          !validBalance ? "csv-starting-balance" : next.validRows ? "performance-summary" : "column-review",
+        );
+      }
       setMapping(next.mapping);
       setError("");
       setAnalysis(null);
@@ -293,12 +342,13 @@ export default function HistoryPage() {
   }
 
   async function importFile(file?: File) {
+    if (!file) return;
+    const version = ++importVersion.current;
     setError("");
     setPreview(null);
     setAnalysis(null);
-    setFileName("");
+    setFileName(file.name);
     setRawCsv("");
-    if (!file) return;
     if (!file.name.toLowerCase().endsWith(".csv") && file.type !== "text/csv") {
       setError("Choose a CSV file. No other file types are accepted.");
       return;
@@ -309,10 +359,11 @@ export default function HistoryPage() {
     }
     try {
       const csv = await file.text();
+      if (version !== importVersion.current) return;
       setRawCsv(csv);
-      setFileName(file.name);
       previewWith(csv);
     } catch {
+      if (version !== importVersion.current) return;
       setError("This file could not be read. Choose it again or try another CSV.");
     }
   }
@@ -326,26 +377,12 @@ export default function HistoryPage() {
   }
 
   function analyze() {
-    try {
-      const balance = Number(startingBalance);
-      if (!Number.isFinite(balance) || balance < 0) {
-        throw new TradeCsvError("Starting balance must be a non-negative number.");
-      }
-      if (!preview) throw new TradeCsvError("Choose a CSV file first.");
-      const report = analyzeTradePreview(preview, balance);
-      setAnalysis(report);
-      requestAnimationFrame(() => document.getElementById("analysis-results")?.focus());
-      setError("");
-      saveSummaryToBrowser(report, balance);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The trade data could not be analyzed.");
-    }
+    if (csvAnalysis) confirmAnalysis(csvAnalysis);
   }
 
   function analyzeManualTrades() {
     try {
-      const balance = Number(startingBalance);
-      if (!Number.isFinite(balance) || balance < 0) {
+      if (!validBalance) {
         throw new TradeCsvError("Starting balance must be a non-negative number.");
       }
       if (manualRows.length === 0) {
@@ -363,7 +400,7 @@ export default function HistoryPage() {
           throw new TradeCsvError(`Row ${idx + 1}: Close time cannot be before open time.`);
         }
         const netProfit = Number(row.netProfit);
-        if (!Number.isFinite(netProfit)) {
+        if (!row.netProfit.trim() || !Number.isFinite(netProfit)) {
           throw new TradeCsvError(`Row ${idx + 1}: Net profit must be a valid number.`);
         }
         const riskVal = row.riskAmount.trim() === "" ? null : Number(row.riskAmount);
@@ -383,17 +420,14 @@ export default function HistoryPage() {
           observedEquity: null,
         };
       });
-      const report = analyzeTrades(parsedTrades, balance);
-      setAnalysis(report);
-      requestAnimationFrame(() => document.getElementById("analysis-results")?.focus());
-      setError("");
-      saveSummaryToBrowser(report, balance);
+      confirmAnalysis(analyzeTrades(parsedTrades, numericBalance));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Manual trades could not be analyzed.");
     }
   }
 
   function loadSampleCsv() {
+    importVersion.current += 1;
     setInputMode("csv");
     setError("");
     setRawCsv(SAMPLE_TRADES_CSV);
@@ -402,6 +436,7 @@ export default function HistoryPage() {
   }
 
   function clear() {
+    importVersion.current += 1;
     setRawCsv("");
     setPreview(null);
     setAnalysis(null);
@@ -413,6 +448,7 @@ export default function HistoryPage() {
   }
 
   function addManualRow() {
+    setAnalysis(null);
     setManualRows((prev) => [
       ...prev,
       {
@@ -428,14 +464,22 @@ export default function HistoryPage() {
   }
 
   function updateManualRow(id: string, key: keyof ManualTradeRow, value: string) {
+    setAnalysis(null);
     setManualRows((prev) => prev.map((row) => (row.id === id ? { ...row, [key]: value } : row)));
   }
 
   function removeManualRow(id: string) {
+    setAnalysis(null);
     setManualRows((prev) => prev.filter((row) => row.id !== id));
   }
 
-  const numericBalance = Number(startingBalance) > 0 ? Number(startingBalance) : 0;
+  const csvNote =
+    preview && inputMode === "csv"
+      ? `${preview.validRows} of ${preview.totalRows} ${preview.totalRows === 1 ? "row" : "rows"} included.` +
+        (preview.invalidRows.length || preview.duplicateRows.length
+          ? ` Excluded: ${preview.invalidRows.length} invalid, ${preview.duplicateRows.length} duplicate.`
+          : "")
+      : "";
 
   return (
     <main className="shell inner-page">
@@ -443,7 +487,7 @@ export default function HistoryPage() {
         <PageHeading
           eyebrow="Module 02 / Trade diagnostics"
           title="Trade history"
-          description="See what your closed trades reveal about performance, holding time, and drawdown. Import a CSV or enter your trades manually."
+          description="Import your closed trades to see your P&L, win rate, and drawdown right away. You can also try the sample CSV or enter trades manually."
         >
           <div className="segmented" role="group" aria-label="Trade entry method">
             <button type="button" aria-pressed={inputMode === "csv"} onClick={() => changeMode("csv")}>
@@ -457,21 +501,42 @@ export default function HistoryPage() {
           </div>
         </PageHeading>
 
-        {!analysis && !preview && linkedSummary && (
-          <div className="linked-summary" role="status">
-            <div>
-              <strong>{linkedSummary.tradeCount} closed trades linked</strong>
-              <p>Your summary is available for matching. Re-import the trades to reopen the charts.</p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/matches?historySearch=1" className="inline-action">
-                Use for matching <ArrowRight size={14} />
-              </Link>
-              <button type="button" className="sample-link" onClick={clear}>
-                Clear summary
-              </button>
-            </div>
-          </div>
+        {overview && (
+          <PerformanceOverview
+            summary={overview}
+            days={currentAnalysis?.metrics.dailyResults}
+            isPreview={Boolean(csvAnalysis && !analysis)}
+            source={savedOnly ? "Last saved analysis" : inputMode === "csv" ? fileName : "Manual trade log"}
+            note={
+              savedOnly
+                ? `Saved on this device for matching · ${savedOnly.tradeCount} closed ${savedOnly.tradeCount === 1 ? "trade" : "trades"}.`
+                : `${csvNote} Amounts are in account currency. Drawdown excludes intratrade moves.`.trim()
+            }
+          >
+            {savedOnly ? (
+              <>
+                <Link href="/matches?historySearch=1" className="inline-action">
+                  Use for matching <ArrowRight size={14} />
+                </Link>
+                <button type="button" className="sample-link" onClick={clear}>
+                  Clear summary
+                </button>
+              </>
+            ) : (
+              <>
+                {inputMode === "csv" && (
+                  <a href="#column-review" className="inline-action">
+                    {analysis ? "Review columns" : "Review columns & confirm"} <ArrowRight size={14} />
+                  </a>
+                )}
+                {analysis && (
+                  <a href="#analysis-results" className="inline-action">
+                    View full analysis <ArrowRight size={14} />
+                  </a>
+                )}
+              </>
+            )}
+          </PerformanceOverview>
         )}
         {/* Top Input & Privacy Section */}
         <section className="history-layout grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,.43fr)]">
@@ -519,30 +584,38 @@ export default function HistoryPage() {
                 <label className="block text-sm font-medium text-ink">
                   Starting balance
                   <input
+                    id="csv-starting-balance"
                     aria-label="Starting balance"
+                    aria-describedby={!validBalance ? "csv-balance-error" : "csv-balance-hint"}
                     inputMode="decimal"
                     className={`${fieldClass} block sm:w-60 tabular-nums`}
                     value={startingBalance}
-                    onChange={(event) => setStartingBalance(event.target.value)}
+                    aria-invalid={!validBalance}
+                    onChange={(event) => changeBalance(event.target.value)}
                   />
                 </label>
-                <p className="mt-1.5 text-xs text-muted">
-                  Used to calculate daily loss and drawdown percentages.
+                <p id="csv-balance-hint" className="mt-1.5 text-xs text-muted">
+                  Used for return and drawdown percentages. Leave blank to show amounts only.
                 </p>
+                {!validBalance && (
+                  <p id="csv-balance-error" role="alert" className="mt-1 text-xs text-rose-800">
+                    Enter a non-negative starting balance.
+                  </p>
+                )}
                 <div className="mt-2.5 flex flex-wrap gap-2">
                   {BALANCE_PRESETS.map((preset) => (
                     <button
                       key={preset}
                       type="button"
                       aria-pressed={startingBalance === String(preset)}
-                      onClick={() => setStartingBalance(String(preset))}
+                      onClick={() => changeBalance(String(preset))}
                       className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition tabular-nums ${
                         startingBalance === String(preset)
                           ? "border-accent bg-accent-tint text-accent"
                           : "border-stroke text-body hover:border-accent-line"
                       }`}
                     >
-                      ${(preset / 1000).toFixed(0)}k
+                      {(preset / 1000).toFixed(0)}k
                     </button>
                   ))}
                 </div>
@@ -575,7 +648,7 @@ export default function HistoryPage() {
                 </p>
               )}
               {preview && (
-                <p role="status" className="mt-5 text-sm font-medium text-emerald-800">
+                <p role="status" className="mt-5 text-sm font-medium text-body wrap-anywhere">
                   <Check size={15} className="mr-1 inline" />
                   {fileName}: {preview.validRows} valid, {preview.invalidRows.length} invalid,{" "}
                   {preview.duplicateRows.length} duplicate of {preview.totalRows} rows.
@@ -603,11 +676,12 @@ export default function HistoryPage() {
 
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <label className="text-xs font-medium text-body">
-                  Starting balance ($)
+                  Starting balance
                   <input
                     inputMode="decimal"
                     value={startingBalance}
-                    onChange={(e) => setStartingBalance(e.target.value)}
+                    aria-invalid={!validBalance}
+                    onChange={(e) => changeBalance(e.target.value)}
                     className="ml-2 w-32 rounded-lg border border-stroke bg-soft px-2.5 py-1.5 text-xs text-ink tabular-nums"
                   />
                 </label>
@@ -616,14 +690,14 @@ export default function HistoryPage() {
                     key={preset}
                     type="button"
                     aria-pressed={startingBalance === String(preset)}
-                    onClick={() => setStartingBalance(String(preset))}
+                    onClick={() => changeBalance(String(preset))}
                     className={`rounded-lg border px-2 py-1 text-xs font-medium ${
                       startingBalance === String(preset)
                         ? "border-accent bg-accent-tint text-accent"
                         : "border-stroke text-muted"
                     }`}
                   >
-                    ${preset / 1000}k
+                    {preset / 1000}k
                   </button>
                 ))}
               </div>
@@ -637,7 +711,7 @@ export default function HistoryPage() {
                       <th className="p-2.5">Entry (ISO UTC)</th>
                       <th className="p-2.5">Exit (ISO UTC)</th>
                       <th className="p-2.5">Net P&amp;L</th>
-                      <th className="p-2.5">Risk ($)</th>
+                      <th className="p-2.5">Planned risk</th>
                       <th className="p-2.5"></th>
                     </tr>
                   </thead>
@@ -750,8 +824,8 @@ export default function HistoryPage() {
             <p className="section-label">Local processing</p>
             <h2>Your trades stay on this device</h2>
             <p>
-              Raw trades are processed in this tab. Only a summary is saved in your browser for matching. No
-              broker credentials are needed.
+              Your file is processed in this tab. Choose Analyze to save a summary in your browser for
+              matching. Raw trades are never stored, and no broker credentials are needed.
             </p>
             <div className="privacy-detail">
               <h3>What your file needs</h3>
@@ -786,17 +860,25 @@ export default function HistoryPage() {
                   Column Verification
                 </p>
                 <h2 className="mt-1 text-xl font-semibold text-ink">Check detected columns</h2>
-                <p className="mt-1 text-sm text-muted">
-                  Required columns are marked with *. Unmap a column before assigning it to another field.
+                <p className="mt-1 max-w-2xl text-sm text-muted">
+                  Statistics update as you map columns. Required fields are marked with *. Choose Analyze to
+                  save the summary for matching and open the full report.
                 </p>
               </div>
-              <button
-                onClick={analyze}
-                disabled={preview.validRows === 0}
-                className="rounded-xl bg-accent px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-accent-deep disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Analyze {preview.validRows} valid {preview.validRows === 1 ? "trade" : "trades"}
-              </button>
+              <div className="flex flex-wrap items-center gap-4">
+                {csvAnalysis && (
+                  <a href="#performance-summary" className="quiet-link">
+                    View performance overview
+                  </a>
+                )}
+                <button
+                  onClick={analyze}
+                  disabled={!csvAnalysis}
+                  className="btn btn-primary disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Analyze {preview.validRows} valid {preview.validRows === 1 ? "trade" : "trades"}
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -805,6 +887,15 @@ export default function HistoryPage() {
                 className="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"
               >
                 {error}
+              </p>
+            )}
+            {preview.validRows === 0 && (
+              <p
+                role="status"
+                className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800"
+              >
+                No performance statistics yet. Check the required columns and excluded rows below to get at
+                least one valid trade.
               </p>
             )}
             <div className="mt-5 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">

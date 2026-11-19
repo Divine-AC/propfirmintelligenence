@@ -125,6 +125,8 @@ export type TradeHistorySummary = {
   bestDayProfitShare: number | null;
   // Extended diagnostic aggregates for deep advisory consultation
   startingBalance?: number;
+  outcomes?: Pick<TradeMetrics, "wins" | "losses" | "breakeven">;
+  maximumBalanceDrawdown?: number;
   netProfit?: number;
   winRate?: number | null;
   averageWin?: number | null;

@@ -8,6 +8,8 @@ import type {
   TradeMetrics,
 } from "./types";
 
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
 function weekKey(date: Date): string {
   const monday = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const weekday = monday.getUTCDay() || 7;
@@ -141,7 +143,7 @@ export function analyzeTrades(sourceTrades: ClosedTrade[], startingBalance = 0, 
     symbol.netProfit += trade.netProfit;
     byInstrument.set(trade.symbol, symbol);
 
-    const dayName = closeDate.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
+    const dayName = WEEKDAYS[(closeDate.getUTCDay() + 6) % 7];
     const day = byDayName.get(dayName) ?? { trades: 0, netProfit: 0 };
     day.trades += 1;
     day.netProfit += trade.netProfit;
@@ -395,11 +397,7 @@ export function analyzeTrades(sourceTrades: ClosedTrade[], startingBalance = 0, 
       .sort((a, b) => b.trades - a.trades || a.symbol.localeCompare(b.symbol)),
     daysOfWeek: [...byDayName]
       .map(([day, values]) => ({ day, ...values }))
-      .sort(
-        (a, b) =>
-          ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].indexOf(a.day) -
-          ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].indexOf(b.day)
-      ),
+      .sort((a, b) => WEEKDAYS.indexOf(a.day) - WEEKDAYS.indexOf(b.day)),
     sessions,
     directionPerformance: [...byDirection].map(([side, values]) => ({
       side,
@@ -428,6 +426,8 @@ export function buildHistorySummary(analysis: TradeAnalysis, startingBalance: nu
     expectancy: metrics.expectancy,
     bestDayProfitShare: metrics.bestDayProfitShare,
     startingBalance,
+    outcomes: { wins: metrics.wins, losses: metrics.losses, breakeven: metrics.breakeven },
+    maximumBalanceDrawdown: metrics.maximumBalanceDrawdown,
     netProfit: metrics.netProfit,
     winRate: metrics.winRate,
     averageWin: metrics.averageWin,

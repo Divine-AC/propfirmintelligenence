@@ -87,6 +87,9 @@ test("linked trade history opens an editable profile, not the last cached report
   await submitProfile(page);
   await openTool(page, "Trade history");
   await page.getByRole("button", { name: "Load sample CSV" }).click();
+  const stats = page.getByRole("region", { name: "Performance overview" });
+  await expect(stats.getByText("+1,427.50", { exact: true })).toBeVisible();
+  await expect(stats.getByText("+14.28%", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Analyze 12 valid trades" }).click();
   await expect(page.getByRole("heading", { name: "12 closed trades analyzed" })).toBeVisible();
   await page.getByRole("link", { name: "Search prop firms using this history" }).click();
