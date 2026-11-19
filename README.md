@@ -8,7 +8,7 @@ Research-driven Forex & CFD prop-firm advisory platform that conducts a strategy
 
 - **Overview:** start a match, open trade diagnostics, or browse the firms and official sources in the research catalogue.
 - **Find matches:** complete Strategy, Account fit, and Risk review. Use **Edit profile** to adjust your inputs, or name and save the resulting report.
-- **Trade history:** import a CSV, try the 12-trade sample, or choose manual entry. Check the detected columns before analyzing. Only summary statistics are retained for matching.
+- **Trade history:** choose a CSV (or **Load sample CSV**) to see a **Performance overview** immediately. It shows net realized P&L, return on the entered starting balance, win rate, profit factor, expectancy, balance drawdown, trade outcomes, and a daily P&L curve. Only valid, unique trades count. Review or remap columns to update the statistics, then choose **Analyze** to save the summary for matching and open the full report. Manual entries show the same overview after analysis. On refresh, confirmed statistics remain available; raw trades and the daily curve are never saved.
 - **Compare:** use **Edit selection** to filter by firm or size. Remove a selected account before adding a fifth; the current comparison is never silently replaced.
 - **Saved reports:** read, print, or delete a consultation in this browser. A local profile is optional.
 
@@ -20,6 +20,7 @@ Research-driven Forex & CFD prop-firm advisory platform that conducts a strategy
    - Dynamic follow-up questions when important details are missing or conflict with either profile settings or imported trade history.
 
 2. **Empirical Trade-History Diagnostics (`/history`)**
+   - [See the performance overview for the sample CSV](docs/trade-performance.webp).
    - Import a UTF-8 CSV (up to 5 MB / 10,000 trades) with column mapping and invalid/duplicate row inspection, or enter trades via the **Manual Trade Log Entry** builder.
    - Calculates net P&L, win rate, profit factor, expectancy, payoff ratio, realized R-multiple, risk consistency CV, holding duration (average, median, min, max), sub-30-second execution counts, overnight and weekend crossings, session performance (`Asian`, `London`, `London/NY Overlap`, `New York`, `Late/Rollover`), chronological first-half vs. second-half stability, best-day share, top-3-trade concentration, outlier loss ratio, and drawdown.
    - Generates plain-language behavioral findings grounded strictly in observed data while separating confirmed facts from estimates.

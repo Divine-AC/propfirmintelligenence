@@ -41,6 +41,18 @@ describe("trade history CSV analysis", () => {
     expect(metrics.limitations[0]).toMatch(/intratrade/);
   });
 
+  it("keeps outcome counts and amount drawdown in the saved statistics, not the underlying series", () => {
+    const withFlatTrade = `${csv}\nEURUSD,buy,2026-01-04T09:00:00Z,2026-01-04T10:00:00Z,2,-2,0,50`;
+    const summary = buildHistorySummary(analyzeTradeCsv(withFlatTrade, 0), 0);
+    expect(summary.outcomes).toEqual({ wins: 2, losses: 1, breakeven: 1 });
+    expect(summary.winRate).toBe(0.5);
+    expect(summary.netProfit).toBe(97);
+    expect(summary.maximumBalanceDrawdown).toBe(51);
+    expect(summary.maximumBalanceDrawdownPct).toBeNull();
+    expect(summary).not.toHaveProperty("trades");
+    expect(summary).not.toHaveProperty("dailyResults");
+  });
+
   it("requires stable timezone-aware timestamps", () => {
     const preview = previewTradeCsv("symbol,side,open_time,close_time,profit\nEURUSD,buy,2026-01-01 09:00,2026-01-01 10:00,1");
     expect(preview.invalidRows[0].errors.join(" ")).toMatch(/timezone/);
